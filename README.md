@@ -64,4 +64,3 @@ $g_smtp_connection_mode = 'tls';
 $g_smtp_username = 'mantisbt';
 $g_smtp_password = '********';
 ```
-
