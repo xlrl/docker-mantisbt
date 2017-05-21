@@ -15,7 +15,7 @@ RUN set -xe \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MANTIS_VER 2.4.1
-ENV MANTIS_MD5 f9afdbde92278df6f920e9146c7e827f
+ENV MANTIS_MD5 0270b01f7faf1c80add2e8cac6d2ab78
 ENV MANTIS_URL http://jaist.dl.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 
