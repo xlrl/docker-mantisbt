@@ -18,6 +18,7 @@ ENV MANTIS_VER 2.7.0
 ENV MANTIS_SHA1 75c37213b47bb7cfef0ce6220f0c5795e1b5bcca
 ENV MANTIS_URL http://jaist.dl.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
+ENV MANTIS_TIMEZONE Eurpe/Berlin
 
 RUN set -xe \
     && curl -fSL ${MANTIS_URL} -o ${MANTIS_FILE} \
@@ -27,5 +28,5 @@ RUN set -xe \
     && chown -R www-data:www-data .
 
 RUN set -xe \
-    && ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
-    && echo 'date.timezone = "Europe/Berlin"' > /usr/local/etc/php/php.ini
+    && ln -sf /usr/share/zoneinfo/${MANTIS_TIMEZONE} /etc/localtime \
+    && echo 'date.timezone = "${MANTIS_TIMEZONE}"' > /usr/local/etc/php/php.ini
