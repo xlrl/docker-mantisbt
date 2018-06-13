@@ -5,15 +5,20 @@ mantisbt:
   links:
     - mysql
   restart: always
+  volumes:
+    - /srv/mantis/config:/var/www/html/config
+    - /srv/mantis/custom:/var/www/html/custom
 
 mysql:
-  image: mysql:latest
+  image: mariadb:latest
   environment:
     - MYSQL_ROOT_PASSWORD=root
     - MYSQL_DATABASE=bugtracker
     - MYSQL_USER=mantis
     - MYSQL_PASSWORD=mantis
   restart: always
+  volumes:
+    - /srv/mantis/mysql:/var/lib/mysql
 
 postgres:
   image: postgres:latest

@@ -1,7 +1,8 @@
 `MantisBT` is an open source issue tracker that provides
 a delicate balance between simplicity and power.
 
-## docker-compose.yml
+## Example docker-compose.yml
+The examples suppose you will have the data for your containers in `/srv/mantis`. Adapt for your server.
 
 ```
 mantisbt:
@@ -10,21 +11,26 @@ mantisbt:
     - "8989:80"
   links:
     - mysql
+  volumes:
+    - /srv/mantis/config:/var/lib/www/html/config
+	- /srv/mantis/custom:/var/lib/www/html/custom
   restart: always
 
 mysql:
-  image: mysql:latest
+  image: mariadb:latest
   environment:
     - MYSQL_ROOT_PASSWORD=root
     - MYSQL_DATABASE=bugtracker
     - MYSQL_USER=mantisbt
     - MYSQL_PASSWORD=mantisbt
+  volumes:
+	- /srv/mantis/mysql:/var/lib/mysql
   restart: always
 ```
 
-> You can use `mariadb`/`postgres` instead of `mysql`.
+> You can use `mysql`/`postgres` instead of `mariadb`.
 
-## install
+## Install
 
 ```
 $ firefox http://localhost:8989/admin/install.php
@@ -48,9 +54,9 @@ Attempt Installation                                    [Install/Upgrade Databas
 ==================================================================================
 ```
 
-## email
+## Email
 
-Append following to `/var/www/html/config_inc.php`
+Append following to `/srv/mantis/config/config_inc.php`
 
 ```
 $g_phpMailer_method = PHPMAILER_METHOD_SMTP;
