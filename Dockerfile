@@ -14,8 +14,8 @@ RUN set -xe \
     && docker-php-ext-install gd mbstring mysql mysqli pgsql soap \
     && rm -rf /var/lib/apt/lists/*
 
-ENV MANTIS_VER 2.17.0
-ENV MANTIS_SHA1 624b0012b43e2d0dc19fafa26d23bb96e5d4514c
+ENV MANTIS_VER 2.17.1
+ENV MANTIS_SHA1 b4dcbf2f0834d821ebd70f3280eb5d95302b9ea9
 ENV MANTIS_URL http://jaist.dl.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 ENV MANTIS_TIMEZONE Europe/Berlin
