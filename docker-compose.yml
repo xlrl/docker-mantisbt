@@ -6,8 +6,8 @@ mantisbt:
     - mysql
   restart: always
   volumes:
-    - /srv/mantis/config:/var/www/html/config
-    - /srv/mantis/custom:/var/www/html/custom
+    - ./config:/var/www/html/config
+    - ./custom:/var/www/html/custom
 
 mysql:
   image: mariadb:latest
@@ -18,7 +18,7 @@ mysql:
     - MYSQL_PASSWORD=mantis
   restart: always
   volumes:
-    - /srv/mantis/mysql:/var/lib/mysql
+    - ./mysql:/var/lib/mysql
 
 postgres:
   image: postgres:latest
