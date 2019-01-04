@@ -12,8 +12,8 @@ mantisbt:
   links:
     - mysql
   volumes:
-    - /srv/mantis/config:/var/lib/www/html/config
-	- /srv/mantis/custom:/var/lib/www/html/custom
+    - ./config:/var/www/html/config
+	- ./custom:/var/www/html/custom
   restart: always
 
 mysql:
@@ -24,7 +24,7 @@ mysql:
     - MYSQL_USER=mantisbt
     - MYSQL_PASSWORD=mantisbt
   volumes:
-	- /srv/mantis/mysql:/var/lib/mysql
+	- ./mysql:/var/lib/mysql
   restart: always
 ```
 
