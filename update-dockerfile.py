@@ -1,4 +1,4 @@
-#!/bin/opt python3
+#!/usr/bin/python3
 import requests
 import re
 import sys
