@@ -2,7 +2,7 @@
 # Dockerfile for mantisbt
 #
 
-FROM php:7.2.30-apache
+FROM php:apache
 MAINTAINER XelaRellum <XelaRellum@web.de>
 
 RUN a2enmod rewrite
