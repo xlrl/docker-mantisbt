@@ -1,0 +1,7 @@
+echo $DISABLE_ADMIN_FOLDER
+if [ "$DISABLE_ADMIN_FOLDER" = "true" ]; then
+  chmod 000 /var/www/html/admin
+  echo "Access to admin folder disabled"
+fi
+
+
