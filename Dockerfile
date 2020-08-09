@@ -15,14 +15,14 @@ RUN set -xe \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MANTIS_VER 2.24.2
-ENV MANTIS_SHA1 81d339aa60b8878b5398d7f7ef1f66151877742f
+ENV MANTIS_SHA1 81d339aa60b8878b5398d7f7ef1f66151877742fac22944e67394ac087c1f4f2c8d5f270127dacc59cbead1a478a6698380b113abbc6a38177e87cc78cd0acd8
 ENV MANTIS_URL http://jaist.dl.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 ENV MANTIS_TIMEZONE Europe/Berlin
 
 RUN set -xe \
     && curl -fSL ${MANTIS_URL} -o ${MANTIS_FILE} \
-    && echo "${MANTIS_SHA1}  ${MANTIS_FILE}" | sha1sum -c \
+    && echo "${MANTIS_SHA1}  ${MANTIS_FILE}" | sha512sum -c \
     && tar -xz --strip-components=1 -f ${MANTIS_FILE} \
     && rm ${MANTIS_FILE} \
     && chown -R www-data:www-data .

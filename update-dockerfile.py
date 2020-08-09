@@ -23,9 +23,9 @@ url = url_fmt.format(MANTIS_VER=version)
 
 resp = requests.get(url)
 assert resp.status_code == 200, "Invalid status code %d" % resp.status_code
-m = re.search(r"[0-9a-f]{40}", resp.text)
+m = re.search(r"([0-9a-f]{128}) ", resp.text)
 assert m, resp.text
-sha1 = m.group(0)
+sha1 = m.group(1)
 logline(sha1)
 
 filepath = "Dockerfile"
