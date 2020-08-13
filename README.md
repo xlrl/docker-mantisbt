@@ -70,3 +70,23 @@ $g_smtp_connection_mode = 'tls';
 $g_smtp_username = 'mantisbt';
 $g_smtp_password = '********';
 ```
+
+## LDAP
+
+Append following to `/srv/mantis/config/config_inc.php` for LDAP
+authentication against an Active Directory server:
+
+```
+$g_login_method = LDAP;
+$g_ldap_server = 'ldap://dc.example.com';
+$g_ldap_root_dn = 'dc=example,dc=com';
+$g_ldap_bind_dn = 'cn=readuser, dc=example, dc=com';
+$g_ldap_bind_passwd = 'geheim123';
+$g_ldap_organization = '';
+$g_use_ldap_email = ON;
+$g_use_ldap_realname = ON;
+$g_ldap_protocol_version = 3;
+$g_ldap_follow_referrals = OFF;
+$g_ldap_uid_field = 'sAMAccountName';
+```
+
