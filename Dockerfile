@@ -30,3 +30,22 @@ RUN set -xe \
 RUN set -xe \
     && ln -sf /usr/share/zoneinfo/${MANTIS_TIMEZONE} /etc/localtime \
     && echo 'date.timezone = "${MANTIS_TIMEZONE}"' > /usr/local/etc/php/php.ini
+
+
+ENV DPE_SHA1 d59ca12d89616c1bccb7769df5b9b97fb5a9a98c
+ENV DPE docker-php-entrypoint
+ENV NDPE new-docker-php-entrypoint
+ENV ODPE old-docker-php-entrypoint
+
+COPY admin-disable-snippet /usr/local/bin
+
+RUN set -xe \
+    && cd /usr/local/bin \
+    && echo "${DPE_SHA1} ${DPE}" | sha1sum -c || (echo "Upstream ${DPE} files has changed, verify this script." && exit 1 ) \
+    && head -n-1 $DPE > $NDPE \
+    && cat admin-disable-snippet >> $NDPE \
+    && tail -n1 $DPE >> $NDPE \
+    && mv $DPE $ODPE \
+    && mv $NDPE $DPE \
+    && chmod 775 $DPE
+
