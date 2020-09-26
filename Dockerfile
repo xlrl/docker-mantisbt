@@ -16,7 +16,7 @@ RUN set -xe \
 
 ENV MANTIS_VER 2.24.3
 ENV MANTIS_SHA512 b072e9d56e88c78dbb81dd9b132f3750c0b2d7f94e579de8dc115c9e5f55760b884cbc92a8defd4c426233f78ee9a959e6674dfc9c825edc6ef03b17141fa702
-ENV MANTIS_URL http://jaist.dl.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
+ENV MANTIS_URL https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 ENV MANTIS_TIMEZONE Europe/Berlin
 
