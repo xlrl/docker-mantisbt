@@ -25,8 +25,8 @@ resp = requests.get(url)
 assert resp.status_code == 200, "Invalid status code %d" % resp.status_code
 m = re.search(r"([0-9a-f]{128}) ", resp.text)
 assert m, resp.text
-sha1 = m.group(1)
-logline(sha1)
+sha512 = m.group(1)
+logline(sha512)
 
 filepath = "Dockerfile"
 log("Patch %s..." % filepath)
@@ -39,9 +39,9 @@ assert m
 t_new = t[ : m.start(1)] + version
 t = t[m.end(0) : ]
 
-m = re.search(r"MANTIS_SHA1 ([0-9a-f]+)", t)
+m = re.search(r"MANTIS_SHA512 ([0-9a-f]+)", t)
 assert m
-t_new += t[ : m.start(1)] + sha1
+t_new += t[ : m.start(1)] + sha512
 t_new += t[m.end(0) : ]
 
 if t_new == t_old:
