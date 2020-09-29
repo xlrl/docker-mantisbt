@@ -22,6 +22,7 @@ ENV MANTIS_TIMEZONE Europe/Berlin
 
 RUN set -xe \
     && curl -fSL ${MANTIS_URL} -o ${MANTIS_FILE} \
+    && sha512sum ${MANTIS_FILE} \
     && echo "${MANTIS_SHA512}  ${MANTIS_FILE}" | sha512sum -c \
     && tar -xz --strip-components=1 -f ${MANTIS_FILE} \
     && rm ${MANTIS_FILE} \
