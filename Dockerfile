@@ -14,8 +14,8 @@ RUN set -xe \
     && docker-php-ext-install gd mysqli pgsql soap ldap \
     && rm -rf /var/lib/apt/lists/*
 
-ENV MANTIS_VER 2.24.5
-ENV MANTIS_SHA512 bb84634154dd4b4a3a5549a45742501d7f852b19f5f7479239ab020ccbc8c54b0aa43f27cfbb39ce976931f483b77600b0a28f0096ac77b799656ceb35a9bea6
+ENV MANTIS_VER 2.25.0
+ENV MANTIS_SHA512 c8276199f56f954c1867a1b3abe664e62552cb4eccc7b5bcb7f9f8ca27b895eec94af9ad099f977c161b7a3a500803458524875a4c9adf213c10f6b0b4a9fe39
 ENV MANTIS_URL https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 ENV MANTIS_TIMEZONE Europe/Berlin
