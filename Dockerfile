@@ -2,7 +2,7 @@
 # Dockerfile for mantisbt
 #
 
-FROM php:7-apache
+FROM php:8.0-apache
 
 RUN a2enmod rewrite
 
