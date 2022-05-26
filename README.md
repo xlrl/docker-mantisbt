@@ -5,30 +5,31 @@ a delicate balance between simplicity and power.
 The examples suppose you will have the data for your containers in `/srv/mantis`. Adapt for your server.
 
 ```
-mantisbt:
-  image: xlrl/mantisbt:latest
-  ports:
-    - "8989:80"
-  links:
-    - mysql
-  volumes:
-    - ./config:/var/www/html/config
-	- ./custom:/var/www/html/custom
-  restart: always
+version: "3.8"
 
-mysql:
-  image: mariadb:latest
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=bugtracker
-    - MYSQL_USER=mantisbt
-    - MYSQL_PASSWORD=mantisbt
-  volumes:
-	- ./mysql:/var/lib/mysql
-  restart: always
+services: 
+    mantisbt:
+        image: xlrl/mantisbt:latest
+        ports:
+            - "8989:80"
+        volumes:
+            - ./config:/var/www/html/config
+            - ./custom:/var/www/html/custom
+        restart: always
+
+    mysql:
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: bugtracker
+            MYSQL_USER: mantisbt
+            MYSQL_PASSWORD: mantisbt
+        volumes:
+            - ./mysql:/var/lib/mysql
+        restart: always
 ```
 
-> You can use `mysql`/`postgres` instead of `mariadb`.
+You can use `mysql`/`postgres` instead of `mariadb`.
 
 ## Install
 
