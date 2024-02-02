@@ -77,6 +77,14 @@ $g_smtp_username = 'mantisbt';
 $g_smtp_password = '********';
 ```
 
+## Disabling admin folder
+
+MantisBT recommends to disable access to the admin folder once the initial
+configuration has been done.
+
+Do to so, set the environment variable `DISABLE_ADMIN_FOLDER` in your
+container startscript of `docker-compose.yml` to `true`.
+
 ## LDAP
 
 Append following to `/srv/mantis/config/config_inc.php` for LDAP
