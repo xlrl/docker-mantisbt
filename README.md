@@ -95,3 +95,15 @@ $g_ldap_protocol_version = 3;
 $g_ldap_follow_referrals = OFF;
 $g_ldap_uid_field = 'sAMAccountName';
 ```
+
+## Upload size
+
+By default, there is a mismatch of the maximum upload size between
+mantis (=5MB) and php.ini (=2MB). To mitigate this error, adapt the
+mantis config the following.
+
+```php
+$g_max_file_size = 2 * 1024 * 1024;
+```
+
+The value for php can be adapted via `MANTIS_MAX_UPLOAD_SIZE` (default 2MB)
