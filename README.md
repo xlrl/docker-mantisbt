@@ -95,3 +95,19 @@ $g_ldap_protocol_version = 3;
 $g_ldap_follow_referrals = OFF;
 $g_ldap_uid_field = 'sAMAccountName';
 ```
+
+## Upload size
+
+By default, there is a mismatch of the maximum upload size between
+mantis (=5MB) and php (=2MB). To mitigate this error, adapt the
+mantis config the following.
+
+```php
+$g_max_file_size = 2 * 1024 * 1024;
+```
+
+Alternatively, the value for php can be adapted via `PHP_MAX_UPLOAD_SIZE` (default 2MB).
+The php setting allows shortcuts for byte values, including K (kilo), M (mega) and G (giga).
+Calculations like the example above won't work for the php parameter.
+There is a dependency between upload_max_filesize and post_max_size (default 8MB).
+`PHP_MAX_UPLOAD_SIZE` may not be set higher than 8M, otherwise further php config is necessary.
