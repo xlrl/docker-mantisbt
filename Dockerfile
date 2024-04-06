@@ -31,4 +31,4 @@ RUN set -xe \
 RUN set -xe \
     && ln -sf /usr/share/zoneinfo/${MANTIS_TIMEZONE} /etc/localtime \
     && echo 'date.timezone = "${MANTIS_TIMEZONE}"' > /usr/local/etc/php/php.ini \
-    && echo 'upload_max_filesize = "${MANTIS_MAX_UPLOAD_SIZE}"' >> /usr/local/etc/php/php.ini
+    && echo 'upload_max_filesize = "${PHP_MAX_UPLOAD_SIZE}"' >> /usr/local/etc/php/php.ini
