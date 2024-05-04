@@ -1,5 +1,8 @@
 mantisbt:
   image: xlrl/mantisbt:latest
+  environment:
+    - MANTIS_TIMEZONE=Europe/Berlin
+    - MANTIS_ENABLE_ADMIN=0
   ports:
     - "8989:80"
   links:

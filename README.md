@@ -15,6 +15,9 @@ version: "3.8"
 services:
     mantisbt:
         image: xlrl/mantisbt:latest
+        environment:
+            MANTIS_TIMEZONE: Europe/Berlin
+            MANTIS_ENABLE_ADMIN: 0
         ports:
             - "8989:80"
         volumes:
@@ -37,6 +40,8 @@ services:
 You can use `mysql`/`postgres` instead of `mariadb`.
 
 ## Install
+
+Important: To be able to reach the "admin" directory, this has to be enabled with "MANTIS_ENABLE_ADMIN=1"
 
 ```bash
 $ firefox http://localhost:8989/admin/install.php
