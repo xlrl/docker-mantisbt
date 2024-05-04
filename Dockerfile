@@ -28,12 +28,6 @@ RUN set -xe \
     && rm ${MANTIS_FILE} \
     && chown -R www-data:www-data .
 
-RUN set -xe \
-    && ln -sf /usr/share/zoneinfo/${MANTIS_TIMEZONE} /etc/localtime \
-    && echo 'date.timezone = "${MANTIS_TIMEZONE}"' > /usr/local/etc/php/php.ini \
-    && echo 'upload_max_filesize = "${PHP_MAX_UPLOAD_SIZE}"' >> /usr/local/etc/php/php.ini \
-    && echo 'display_errors = Off' >> /usr/local/etc/php/php.ini \
-    && echo 'display_startup_errors = Off' >> /usr/local/etc/php/php.ini
 COPY mantisbt-entrypoint.sh /usr/local/bin/mantisbt-entrypoint.sh
 
 WORKDIR /var/www/html
