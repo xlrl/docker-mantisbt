@@ -116,3 +116,41 @@ The php setting allows shortcuts for byte values, including K (kilo), M (mega) a
 Calculations like the example above won't work for the php parameter.
 There is a dependency between upload_max_filesize and post_max_size (default 8MB).
 `PHP_MAX_UPLOAD_SIZE` may not be set higher than 8M, otherwise further php config is necessary.
+
+## Maintainers
+
+This is the maintainer's section for this repository.
+
+If you want to upgrade to a new mantis version `X.Y.Z` run the script `update-dockerfile.py`:
+
+```sh
+python3 update-dockerfile.py X.Y.Z
+```
+
+This will update the link and sha hash for the mantisbt source tarball and it will also try to find out the latest version the php base image (this makes the used base image tag explicit and adds transpaceny).
+
+Build the new image and tag it:
+
+```sh
+docker build -t xlrl/mantisbt:X.Y.Z .
+```
+
+Run the image on your system or some test machine. Once you are satisfied with your tests, create the "latest" tag and push both tags:
+
+```sh
+docker tag X.Y.Z xlrl/mantisbt:X.Y.Z xlrl/mantisbt:latest
+docker login
+docker push xlrl/mantisbt:X.Y.Z
+docker push xlrl/mantisbt:latest
+```
+
+Also do not forget the git commit and tags:
+
+```sh
+git add Dockerfile
+git commit -m "Update to X.Y.Z"
+git tag X.Y.Z
+git push origin/main X.Y.Z
+```
+
+This should be all!
