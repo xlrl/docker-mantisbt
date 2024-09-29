@@ -2,7 +2,7 @@
 # Dockerfile for mantisbt
 #
 
-FROM php:8.3.8-apache
+FROM php:8.3.12-apache
 
 RUN a2enmod rewrite
 
@@ -13,8 +13,8 @@ RUN set -xe \
     && docker-php-ext-install gd mysqli pgsql soap ldap \
     && rm -rf /var/lib/apt/lists/*
 
-ENV MANTIS_VER 2.26.2
-ENV MANTIS_SHA512 55a8cae5036c34fc346fb5585eeffdd86d252ac1f64bbf44e361d09aedad8a24ac4f047f2659ccc80343784aa92a1a4217fe2c41873b6c0ace208af7ebc37c55
+ENV MANTIS_VER 2.26.4
+ENV MANTIS_SHA512 585aec3cf0a81affad53eda83d2d2bd1b43da8d0bcf89926880b6234e9fd019de816c367c5b5a48f439a3c34a48269d4ec6fd1f88d7b6123325b349c77291e1d
 ENV MANTIS_URL https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE mantisbt.tar.gz
 ENV MANTIS_TIMEZONE Europe/Berlin
