@@ -1,0 +1,9 @@
+[project]
+name = "docker-mantisbt"
+version = "0.1.0"
+description = "This python/uv project is used only as support for the helper scripts"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.32.3",
+]
