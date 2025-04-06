@@ -19,7 +19,7 @@ def update_mantis(t : str, mantis_version : str) -> str:
     version = m.group(0)
 
     log("Get SHA1 digest for %s..." % version)
-    url_fmt = "http://downloads.sourceforge.net/project/mantisbt/mantis-stable/{MANTIS_VER}/mantisbt-{MANTIS_VER}.tar.gz.digests"
+    url_fmt = "https://master.dl.sourceforge.net/project/mantisbt/mantis-stable/{MANTIS_VER}/mantisbt-{MANTIS_VER}.tar.gz.digests"
     url = url_fmt.format(MANTIS_VER=version)
 
     resp = requests.get(url)
@@ -86,7 +86,7 @@ def update_php(t : str) -> str:
     log(latest_tag_name)
     log(" ")
 
-    m = re.search("FROM php:([^\s]+)", t)
+    m = re.search(r"FROM php:([^\s]+)", t)
     assert m is not None
     current_tag_name = m.group(1)
     current_version = parse_tag_version(current_tag_name)
