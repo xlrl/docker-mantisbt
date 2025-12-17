@@ -10,8 +10,6 @@ The examples suppose you will have the data for your containers in `/srv/mantis`
 Note: make sure the credentials in the "docker-compose.yml" environment variables match this you supply in "install.php".
 
 ```yaml
-version: "3.8"
-
 services:
     mantisbt:
         image: xlrl/mantisbt:latest

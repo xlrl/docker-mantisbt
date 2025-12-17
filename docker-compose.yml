@@ -1,31 +1,32 @@
-mantisbt:
-  image: xlrl/mantisbt:latest
-  environment:
-    - MANTIS_TIMEZONE=Europe/Berlin
-    - MANTIS_ENABLE_ADMIN=0
-  ports:
-    - "8989:80"
-  links:
-    - mysql
-  restart: always
-  volumes:
-    - ./config:/var/www/html/config
-    - ./custom:/var/www/html/custom
+services:
+  mantisbt:
+    image: xlrl/mantisbt:latest
+    volumes:
+      - ./config:/var/www/html/config
+      - ./custom:/var/www/html/custom
+    environment:
+      - MANTIS_TIMEZONE=Europe/Berlin
+      - MANTIS_ENABLE_ADMIN=0
+    ports:
+      - '8989:80'
+    restart: always
+    links:
+      - mysql
 
-mysql:
-  image: mariadb:latest
-  environment:
-    - MYSQL_ROOT_PASSWORD=root
-    - MYSQL_DATABASE=bugtracker
-    - MYSQL_USER=mantis
-    - MYSQL_PASSWORD=mantis
-  restart: always
-  volumes:
-    - ./mysql:/var/lib/mysql
+  mysql:
+    image: mariadb:latest
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=bugtracker
+      - MYSQL_USER=mantis
+      - MYSQL_PASSWORD=mantis
+    restart: always
 
-postgres:
-  image: postgres:latest
-  environment:
-    - POSTGRES_USER=root
-    - POSTGRES_PASSWORD=root
-  restart: always
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    restart: always
