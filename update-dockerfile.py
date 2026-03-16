@@ -29,12 +29,12 @@ def update_mantis(t : str, mantis_version : str) -> str:
     sha512 = m.group(1)
     logline(sha512)
 
-    m = re.search(r"MANTIS_VER ([0-9.]+)", t)
+    m = re.search(r"MANTIS_VER=([0-9.]+)", t)
     assert m
     t_new = t[ : m.start(1)] + version
     t = t[m.end(0) : ]
 
-    m = re.search(r"MANTIS_SHA512 ([0-9a-f]+)", t)
+    m = re.search(r"MANTIS_SHA512=([0-9a-f]+)", t)
     assert m
     t_new += t[ : m.start(1)] + sha512
     t_new += t[m.end(0) : ]
@@ -74,7 +74,7 @@ def update_php(t : str) -> str:
                 continue
 
             log(".")
- 
+
             tag_version = parse_tag_version(name)
             if tag_version is None:
                 continue
