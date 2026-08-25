@@ -63,6 +63,20 @@ Attempt Installation                                    [Install/Upgrade Databas
 ==================================================================================
 ```
 
+## Permissions for config and custom
+
+The `./config` and `./custom` folders are bind-mounted into the container,
+where the web server runs as `www-data` (uid 33, gid 33). When the installer
+fails with "Cannot write config_inc.php", the mounted folders are not
+writable by that user. Create them if they don't exist yet and fix the
+ownership on the host (deliberately not done automatically at container
+start):
+
+```bash
+mkdir -p ./config ./custom
+chown -R 33:33 ./config ./custom
+```
+
 ## Email
 
 Append following to `/srv/mantis/config/config_inc.php`
