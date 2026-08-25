@@ -14,7 +14,7 @@ RUN set -xe \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MANTIS_VER=2.28.4
-ENV MANTIS_SHA512=40f88cad4ff6aa54bae42dd64d3c96ed3c7b8dc9a3efc70fe1c1dea6eff8af0fbdc64404753fb34c6f3045f4b9de71fa72ec6db064e3597e76b68df079f344ff
+ENV MANTIS_SHA512=95968b0e6c3d66a14aa575ddece1b25110b830e54571f8650f619e2f3a9c82a8939605b72b1f4df6448136156cd2f80d5a9831b214104bdfb64b06790de2c0a0
 ENV MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE=mantisbt.tar.gz
 ENV MANTIS_TIMEZONE=Europe/Berlin
