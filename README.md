@@ -129,6 +129,18 @@ Calculations like the example above won't work for the php parameter.
 There is a dependency between upload_max_filesize and post_max_size (default 8MB).
 `PHP_MAX_UPLOAD_SIZE` may not be set higher than 8M, otherwise further php config is necessary.
 
+## Building
+
+Build a multi-arch image (`linux/amd64`, `linux/arm64`) with podman, tagged
+`xlrl/mantisbt:<MANTIS_VER>` and `xlrl/mantisbt:latest`:
+
+```shell
+./build-image.sh
+PLATFORMS=linux/amd64,linux/arm64,linux/arm/v7 ./build-image.sh
+```
+
+Cross builds need `qemu-user-static`.
+
 ## Maintainers
 
 This is the maintainer's section for this repository.
