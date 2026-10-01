@@ -1,0 +1,5 @@
+# runtime data, not needed in the image
+/.venv/
+/config/
+/custom/
+/mysql/
