@@ -3,6 +3,8 @@
 `MantisBT` is an open source issue tracker that provides
 a delicate balance between simplicity and power.
 
+For changes take a look at [Changelog.md](Changelog.md).
+
 ## Example docker-compose.yml
 
 The examples suppose you will have the data for your containers in `/srv/mantis`. Adapt for your server.
