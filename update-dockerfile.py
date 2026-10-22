@@ -101,6 +101,27 @@ def update_php(t : str) -> str:
     return t
 
 
+def update_readme(t : str, dockerfile : str) -> str:
+    # sync version badges with Dockerfile
+    m = re.search(r"MANTIS_VER=([0-9.]+)", dockerfile)
+    assert m
+    t = re.sub(r"(badge/MantisBT-)[0-9.]+(-)", r"\g<1>" + m.group(1) + r"\g<2>", t)
+
+    m = re.search(r"FROM php:([0-9]+[.][0-9]+)", dockerfile)
+    assert m
+    t = re.sub(r"(badge/PHP-)[0-9.]+(-)", r"\g<1>" + m.group(1) + r"\g<2>", t)
+
+    return t
+
+
+def patch_file(filepath : str, t_new : str, t_old : str):
+    if t_new == t_old:
+        logline("Unchanged")
+    else:
+        with open(filepath, "w") as file:
+            file.write(t_new)
+        logline("Updated")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser()
@@ -123,9 +144,10 @@ if __name__ == "__main__":
     if not args.keep_php_version:
         t = update_php(t)
 
-    if t == t_old:
-        logline("Unchanged")
-    else:
-        with open(filepath, "w") as file:
-            file.write(t)
-        logline("Updated")
+    patch_file(filepath, t, t_old)
+
+    readme_path = "README.md"
+    log(f"Patch {readme_path}...")
+    with open(readme_path, "r") as file:
+        r_old = file.read()
+    patch_file(readme_path, update_readme(r_old, t), r_old)
