@@ -10,7 +10,7 @@ RUN set -xe \
     && apt-get update \
     && apt-get install -y libpng-dev libjpeg-dev libpq-dev libxml2-dev libldap-dev libfreetype6-dev \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
-    && docker-php-ext-install gd mysqli pgsql soap ldap \
+    && docker-php-ext-install -j"$(nproc)" gd mysqli pgsql soap ldap \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MANTIS_VER=2.28.4
