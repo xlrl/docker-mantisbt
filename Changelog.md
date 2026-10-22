@@ -1,10 +1,14 @@
 # Changelog
 
-## Unreleased
+## Version 2.28.4-2 (2026-10-22)
 
+- Upgrade to PHP 8.5.12, fixes CVE-2026-109618 and CVE-2026-109619 (#37)
 - Add `build-image.sh` to build a multi-arch image (amd64, arm64) with podman
 - Add `.dockerignore` to keep runtime data out of the build context
 - Add this changelog
+- Add badges to the README, version badges are updated by `update-dockerfile.py`
+- Get latest PHP image tag from the official-images manifest
+- Compile PHP extensions in parallel to speed up (cross) builds
 
 ## Version 2.28.4-1 (2026-08-25)
 
