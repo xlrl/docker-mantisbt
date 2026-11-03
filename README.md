@@ -125,19 +125,60 @@ $g_ldap_uid_field = 'sAMAccountName';
 
 ## Upload size
 
-By default, there is a mismatch of the maximum upload size between
-mantis (=5MB) and php (=2MB). To mitigate this error, adapt the
-mantis config the following.
+The php upload limit is set via `PHP_MAX_UPLOAD_SIZE` (default 5M) and
+matches the mantis default `$g_max_file_size` of 5MB. When changing one,
+adapt the other, otherwise the setup check reports an error. For example,
+for a limit of 2MB:
 
 ```php
 $g_max_file_size = 2 * 1024 * 1024;
 ```
 
-Alternatively, the value for php can be adapted via `PHP_MAX_UPLOAD_SIZE` (default 2MB).
 The php setting allows shortcuts for byte values, including K (kilo), M (mega) and G (giga).
 Calculations like the example above won't work for the php parameter.
 There is a dependency between upload_max_filesize and post_max_size (default 8MB).
 `PHP_MAX_UPLOAD_SIZE` may not be set higher than 8M, otherwise further php config is necessary.
+
+## Reverse proxy and base path
+
+Mantis derives its base URL from the request headers unless `$g_path` is
+set. Set it in `config/config_inc.php` to the public URL, including the
+trailing slash. This also silences the `"path" is defined in config_inc.php`
+warning of the setup check (`admin/check/index.php`):
+
+```php
+$g_path = 'https://example.org/mantis/';
+```
+
+The container serves mantis at `/`, so the reverse proxy has to strip the
+path prefix, e.g. for Apache:
+
+```apache
+ProxyPass        /mantis/ http://localhost:8989/
+ProxyPassReverse /mantis/ http://localhost:8989/
+RequestHeader    set X-Forwarded-Proto "https"
+```
+
+or for nginx:
+
+```nginx
+location /mantis/ {
+    proxy_pass http://localhost:8989/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+`X-Forwarded-Proto` lets mantis detect HTTPS, e.g. for secure cookies.
+
+## Setup check
+
+The image is configured so that the setup check reports as few warnings as
+possible. The remaining warnings are expected:
+
+- `"path" is defined in config_inc.php`: set `$g_path`, see above.
+- `... is set to a path outside the web root` for `core_path`,
+  `library_path`, etc.: these folders are protected by `.htaccess` files.
 
 ## Building
 

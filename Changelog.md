@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Reduce setup check warnings (#10): disable `register_argc_argv`, enable
+  `log_errors`, remove the unneeded `doc` folder
+- Raise default `PHP_MAX_UPLOAD_SIZE` to 5M to match the mantis default
+- Hide PHP and Apache version information
+- Document `$g_path` and reverse proxy setups with a base path (#10)
+
 ## Version 2.28.4-2 (2026-10-22)
 
 - Upgrade to PHP 8.5.12, fixes CVE-2026-109618 and CVE-2026-109619 (#37)
