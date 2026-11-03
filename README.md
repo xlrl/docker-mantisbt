@@ -36,10 +36,10 @@ services:
     mysql:
         image: mariadb:latest
         environment:
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in the environment or a .env file}
             MYSQL_DATABASE: bugtracker
             MYSQL_USER: mantisbt
-            MYSQL_PASSWORD: mantisbt
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in the environment or a .env file}
         volumes:
             - ./mysql:/var/lib/mysql
         restart: always
@@ -64,10 +64,10 @@ Installation Options
 Type of Database                                        MySQL/MySQLi
 Hostname (for Database Server)                          mysql
 Username (for Database)                                 mantisbt
-Password (for Database)                                 mantisbt
+Password (for Database)                                 the MYSQL_PASSWORD you set
 Database name (for Database)                            bugtracker
 Admin Username (to create Database if required)         root
-Admin Password (to create Database if required)         root
+Admin Password (to create Database if required)         the MYSQL_ROOT_PASSWORD you set
 Print SQL Queries instead of Writing to the Database    [ ]
 Attempt Installation                                    [Install/Upgrade Database]
 ==================================================================================

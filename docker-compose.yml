@@ -1,3 +1,6 @@
+# Database passwords are not shipped with defaults: set them in the
+# environment or a .env file before starting the stack. Compose fails
+# fast with an error message if any of them is unset.
 services:
   mantisbt:
     image: xlrl/mantisbt:latest
@@ -18,15 +21,15 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in the environment or a .env file}
       - MYSQL_DATABASE=bugtracker
       - MYSQL_USER=mantis
-      - MYSQL_PASSWORD=mantis
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in the environment or a .env file}
     restart: always
 
   postgres:
     image: postgres:latest
     environment:
       - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the environment or a .env file}
     restart: always
