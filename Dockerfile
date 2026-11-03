@@ -6,6 +6,10 @@ FROM php:8.5.12-apache
 
 RUN a2enmod rewrite
 
+# Hide Apache version and OS in headers and error pages
+RUN sed -i -e 's/^ServerTokens .*/ServerTokens Prod/' -e 's/^ServerSignature .*/ServerSignature Off/' \
+    /etc/apache2/conf-available/security.conf
+
 RUN set -xe \
     && apt-get update \
     && apt-get install -y libpng-dev libjpeg-dev libpq-dev libxml2-dev libldap-dev libfreetype6-dev \
