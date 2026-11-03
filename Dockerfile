@@ -26,6 +26,7 @@ RUN set -xe \
     && echo "${MANTIS_SHA512}  ${MANTIS_FILE}" | sha512sum -c \
     && tar -xz --strip-components=1 -f ${MANTIS_FILE} \
     && rm ${MANTIS_FILE} \
+    && rm -rf doc \
     && chown -R www-data:www-data .
 
 COPY mantisbt-entrypoint.sh /usr/local/bin/mantisbt-entrypoint.sh
