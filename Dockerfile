@@ -18,7 +18,7 @@ ENV MANTIS_SHA512=95968b0e6c3d66a14aa575ddece1b25110b830e54571f8650f619e2f3a9c82
 ENV MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE=mantisbt.tar.gz
 ENV MANTIS_TIMEZONE=Europe/Berlin
-ENV PHP_MAX_UPLOAD_SIZE="2M"
+ENV PHP_MAX_UPLOAD_SIZE="5M"
 
 RUN set -xe \
     && curl -fSL ${MANTIS_URL} -o ${MANTIS_FILE} \
