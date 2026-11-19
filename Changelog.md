@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- `build-image.sh` tags `localhost/xlrl/mantisbt`
+- Add `VERSION` file, written by `update-dockerfile.py` and read by `build-image.sh`
 - Reduce setup check warnings (#10): disable `register_argc_argv`, enable
   `log_errors`, remove the unneeded `doc` folder
 - Raise default `PHP_MAX_UPLOAD_SIZE` to 5M to match the mantis default
