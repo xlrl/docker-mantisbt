@@ -13,7 +13,7 @@ set -eu
 
 cd "$(dirname "$0")"
 
-version=$(sed -n 's/^ENV MANTIS_VER=\(.*\)$/\1/p' Dockerfile)
+version=$(cat VERSION)
 platforms=${PLATFORMS:-linux/amd64,linux/arm64}
 
 image=docker.io/xlrl/mantisbt

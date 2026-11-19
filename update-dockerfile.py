@@ -157,3 +157,12 @@ if __name__ == "__main__":
     with open(readme_path, "r") as file:
         r_old = file.read()
     patch_file(readme_path, update_readme(r_old, t), r_old)
+
+    # image tag version, read by build-image.sh
+    version_path = "VERSION"
+    log(f"Patch {version_path}...")
+    m = re.search(r"MANTIS_VER=([0-9.]+)", t)
+    assert m
+    with open(version_path, "r") as file:
+        v_old = file.read()
+    patch_file(version_path, m.group(1) + "\n", v_old)
