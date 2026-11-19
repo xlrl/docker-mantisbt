@@ -1,7 +1,8 @@
 #!/bin/sh
 #
 # Build the multi-arch mantisbt image using podman and tag it as
-# docker.io/xlrl/mantisbt:latest and docker.io/xlrl/mantisbt:<version>.
+# localhost/xlrl/mantisbt:latest and localhost/xlrl/mantisbt:<version>.
+# Never pushes; prints the push commands.
 #
 # Env:
 #   PLATFORMS  comma separated target platforms
@@ -16,7 +17,7 @@ cd "$(dirname "$0")"
 version=$(cat VERSION)
 platforms=${PLATFORMS:-linux/amd64,linux/arm64}
 
-image=docker.io/xlrl/mantisbt
+image=localhost/xlrl/mantisbt
 manifest="${image}:${version}"
 
 # Start from a fresh manifest list
@@ -30,3 +31,8 @@ podman build \
     .
 
 podman tag "${manifest}" "${image}:latest"
+
+echo "Built ${image}:${version} and :latest (${platforms})"
+echo "Push with:"
+echo "  podman manifest push --all ${image}:${version} docker://<registry>/xlrl/mantisbt:${version}"
+echo "  podman manifest push --all ${image}:latest docker://<registry>/xlrl/mantisbt:latest"

@@ -183,7 +183,7 @@ possible. The remaining warnings are expected:
 ## Building
 
 Build a multi-arch image (`linux/amd64`, `linux/arm64`) with podman, tagged
-`xlrl/mantisbt:<MANTIS_VER>` and `xlrl/mantisbt:latest`:
+`localhost/xlrl/mantisbt:<MANTIS_VER>` and `localhost/xlrl/mantisbt:latest`:
 
 ```shell
 ./build-image.sh
@@ -204,19 +204,18 @@ python3 update-dockerfile.py X.Y.Z
 
 This will update the link and sha hash for the mantisbt source tarball and it will also try to find out the latest version the php base image (this makes the used base image tag explicit and adds transpaceny).
 
-Build the new image and tag it:
+Build the new image:
 
 ```sh
-docker build -t xlrl/mantisbt:X.Y.Z .
+./build-image.sh
 ```
 
-Run the image on your system or some test machine. Once you are satisfied with your tests, create the "latest" tag and push both tags:
+Run the image on your system or some test machine. Once you are satisfied with your tests, push both tags:
 
 ```sh
-docker tag X.Y.Z xlrl/mantisbt:X.Y.Z xlrl/mantisbt:latest
-docker login
-docker push xlrl/mantisbt:X.Y.Z
-docker push xlrl/mantisbt:latest
+podman login <registry>
+podman manifest push --all localhost/xlrl/mantisbt:X.Y.Z docker://<registry>/xlrl/mantisbt:X.Y.Z
+podman manifest push --all localhost/xlrl/mantisbt:latest docker://<registry>/xlrl/mantisbt:latest
 ```
 
 Also do not forget the git commit and tags:
