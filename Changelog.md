@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## Version 2.28.4-3 (2026-11-20)
 
 - Switch to Alpine with prebuilt PHP 8.5 packages instead of the official
   `php` image: no compilation, smaller image, faster cross builds
