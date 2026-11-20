@@ -1,8 +1,11 @@
 #!/bin/sh
 #
-# Build the multi-arch mantisbt image using podman and tag it as
-# localhost/xlrl/mantisbt:latest and localhost/xlrl/mantisbt:<version>.
+# Build the multi-arch mantisbt image using podman.
 # Never pushes; prints the push commands.
+#
+# Usage: build-image.sh [TAG]
+#   TAG  tag as localhost/xlrl/mantisbt:TAG only
+#        (default: tag as :<VERSION> and :latest)
 #
 # Env:
 #   PLATFORMS  comma separated target platforms
@@ -14,11 +17,19 @@ set -eu
 
 cd "$(dirname "$0")"
 
-version=$(cat VERSION)
+image=localhost/xlrl/mantisbt
 platforms=${PLATFORMS:-linux/amd64,linux/arm64}
 
-image=localhost/xlrl/mantisbt
-manifest="${image}:${version}"
+if [ $# -gt 0 ]; then
+    tags=$1
+else
+    tags="$(cat VERSION) latest"
+fi
+
+# first tag is the manifest, the others are aliases
+set -- ${tags}
+manifest="${image}:$1"
+shift
 
 # Start from a fresh manifest list
 if podman manifest exists "${manifest}"; then
@@ -30,9 +41,12 @@ podman build \
     --manifest "${manifest}" \
     .
 
-podman tag "${manifest}" "${image}:latest"
+for tag in "$@"; do
+    podman tag "${manifest}" "${image}:${tag}"
+done
 
-echo "Built ${image}:${version} and :latest (${platforms})"
+echo "Built ${image}: ${tags} (${platforms})"
 echo "Push with:"
-echo "  podman manifest push --all ${image}:${version} docker://<registry>/xlrl/mantisbt:${version}"
-echo "  podman manifest push --all ${image}:latest docker://<registry>/xlrl/mantisbt:latest"
+for tag in ${tags}; do
+    echo "  podman manifest push --all ${image}:${tag} docker://<registry>/xlrl/mantisbt:${tag}"
+done

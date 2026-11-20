@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- `build-image.sh [TAG]`: tag with `TAG` only instead of version and `latest`
 - `build-image.sh` tags `localhost/xlrl/mantisbt`
 - Add `VERSION` file, written by `update-dockerfile.py` and read by `build-image.sh`
 - Reduce setup check warnings (#10): disable `register_argc_argv`, enable
