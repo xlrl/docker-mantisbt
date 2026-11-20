@@ -2,7 +2,12 @@
 
 ## Unreleased
 
+- Switch to Alpine with prebuilt PHP 8.5 packages instead of the official
+  `php` image: no compilation, smaller image, faster cross builds
+- `www-data` keeps uid/gid 33, existing volumes keep working
 - `build-image.sh [TAG]`: tag with `TAG` only instead of version and `latest`
+- `update-dockerfile.py` updates Alpine and PHP packages,
+  `--keep-php-version` is now `--keep-base-version`
 - `build-image.sh` tags `localhost/xlrl/mantisbt`
 - Add `VERSION` file, written by `update-dockerfile.py` and read by `build-image.sh`
 - Reduce setup check warnings (#10): disable `register_argc_argv`, enable

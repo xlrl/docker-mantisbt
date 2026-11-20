@@ -1,22 +1,26 @@
-#!/bin/bash
+#!/bin/sh
 
-set -eo pipefail
+set -e
 
-# Configure the timezone for this image
-ln -sf /usr/share/zoneinfo/$MANTIS_TIMEZONE /etc/localtime
-echo date.timezone = "$MANTIS_TIMEZONE" > /usr/local/etc/php/php.ini
-echo upload_max_filesize = "$PHP_MAX_UPLOAD_SIZE" >> /usr/local/etc/php/php.ini
-echo 'display_errors = Off' >> /usr/local/etc/php/php.ini
-echo 'display_startup_errors = Off' >> /usr/local/etc/php/php.ini
-echo 'log_errors = On' >> /usr/local/etc/php/php.ini
-echo 'register_argc_argv = Off' >> /usr/local/etc/php/php.ini
-echo 'expose_php = Off' >> /usr/local/etc/php/php.ini
+# Timezone and PHP settings
+ln -sf "/usr/share/zoneinfo/$MANTIS_TIMEZONE" /etc/localtime
+cat > "$PHP_INI_DIR/conf.d/zz-mantis.ini" <<EOF
+date.timezone = "$MANTIS_TIMEZONE"
+upload_max_filesize = "$PHP_MAX_UPLOAD_SIZE"
+display_errors = Off
+display_startup_errors = Off
+log_errors = On
+register_argc_argv = Off
+expose_php = Off
+EOF
 
-# If MANTIS_ENABLE_ADMIN is set to , then enable 'admin' folder
+# Hide 'admin' folder unless MANTIS_ENABLE_ADMIN is set and not 0
 test -d admin && chmod -rx admin && mv admin .admin
 
-if [ ! -z "$MANTIS_ENABLE_ADMIN" ] && [ "$MANTIS_ENABLE_ADMIN" -ne "0" ]; then
+if [ -n "$MANTIS_ENABLE_ADMIN" ] && [ "$MANTIS_ENABLE_ADMIN" -ne "0" ]; then
   test -d .admin && mv .admin admin && chmod +rx admin
 fi
 
-apache2-foreground
+# Stale pid after container restart
+rm -f /run/apache2/httpd.pid
+exec httpd -DFOREGROUND

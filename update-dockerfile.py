@@ -1,5 +1,7 @@
 #!/usr/bin/python3
+import io
 import re
+import tarfile
 from argparse import ArgumentParser
 
 import requests
@@ -42,62 +44,47 @@ def update_mantis(t: str, mantis_version: str) -> str:
     return t_new
 
 
-def parse_tag_version(tag_name: str) -> tuple:
-    r = re.compile("^([0-9]+)[.]([0-9]+)[.]([0-9]+)-apache$")
-
-    m = r.match(tag_name)
-    if m is None:
-        return None
-
-    major = int(m.group(1))
-    minor = int(m.group(2))
-    patch = int(m.group(3))
-
-    return (major, minor, patch)
+ALPINE_URL = "https://dl-cdn.alpinelinux.org/alpine"
 
 
-def update_php(t: str) -> str:
-    names = {}
-    log("Get latest PHP image tag...")
-    # supported tags of the official image, one request
-    url = "https://raw.githubusercontent.com/docker-library/official-images/master/library/php"
+def latest_alpine_branch() -> str:
+    url = f"{ALPINE_URL}/latest-stable/releases/x86_64/latest-releases.yaml"
     resp = requests.get(url)
     assert resp.status_code == 200, f"Invalid status code {resp.status_code}"
+    m = re.search(r"branch: v([0-9]+[.][0-9]+)", resp.text)
+    assert m, "No branch in " + url
+    return m.group(1)
 
-    for line in resp.text.splitlines():
-        if not line.startswith("Tags:"):
-            continue
 
-        for name in line[len("Tags:") :].split(","):
-            name = name.strip()
-            tag_version = parse_tag_version(name)
-            if tag_version is None:
-                continue
+def latest_php_package(branch: str) -> str:
+    # newest phpXY package in community
+    url = f"{ALPINE_URL}/v{branch}/community/x86_64/APKINDEX.tar.gz"
+    resp = requests.get(url)
+    assert resp.status_code == 200, f"Invalid status code {resp.status_code}"
+    with tarfile.open(fileobj=io.BytesIO(resp.content)) as tar:
+        member = tar.extractfile("APKINDEX")
+        assert member is not None
+        index = member.read().decode()
+    names = re.findall(r"^P:(php[0-9]{2})$", index, re.MULTILINE)
+    assert names, "No phpXY package in " + url
+    return max(names, key=lambda n: int(n[3:]))
 
-            names[tag_version] = name
 
-    assert names, "No X.Y.Z-apache tag found in " + url
+def update_base(t: str) -> str:
+    log("Get latest Alpine branch and PHP package...")
+    branch = latest_alpine_branch()
+    php = latest_php_package(branch)
+    log(f"alpine:{branch} {php} ")
 
-    latest_version = max(names.keys())
-    latest_tag_name = names[latest_version]
-    log(latest_tag_name)
-    log(" ")
-
-    m = re.search(r"FROM php:([^\s]+)", t)
+    m = re.search(r"FROM alpine:([0-9.]+)", t)
     assert m is not None
-    current_tag_name = m.group(1)
-    current_version = parse_tag_version(current_tag_name)
+    current = tuple(int(x) for x in m.group(1).split("."))
+    if tuple(int(x) for x in branch.split(".")) < current:
+        log(f"WARNING: current alpine:{m.group(1)} is newer than {branch} ")
+    t = t[: m.start(1)] + branch + t[m.end(1) :]
 
-    if current_version is None:
-        pass
-    elif latest_version < current_version:
-        log(
-            f"WARNING: current tag {current_tag_name} is newer than latest {latest_tag_name} "
-        )
-
-    t = t[: m.start(1)] + latest_tag_name + t[m.end(1) :]
-
-    return t
+    # package prefixes and PHP_INI_DIR
+    return re.sub(r"\bphp[0-9]{2}\b", php, t)
 
 
 def update_readme(t: str, dockerfile: str) -> str:
@@ -106,9 +93,10 @@ def update_readme(t: str, dockerfile: str) -> str:
     assert m
     t = re.sub(r"(badge/MantisBT-)[0-9.]+(-)", r"\g<1>" + m.group(1) + r"\g<2>", t)
 
-    m = re.search(r"FROM php:([0-9]+[.][0-9]+)", dockerfile)
+    m = re.search(r"PHP_INI_DIR=/etc/php([0-9])([0-9])", dockerfile)
     assert m
-    t = re.sub(r"(badge/PHP-)[0-9.]+(-)", r"\g<1>" + m.group(1) + r"\g<2>", t)
+    php = f"{m.group(1)}.{m.group(2)}"
+    t = re.sub(r"(badge/PHP-)[0-9.]+(-)", r"\g<1>" + php + r"\g<2>", t)
 
     return t
 
@@ -129,10 +117,10 @@ if __name__ == "__main__":
         help="Update to this mantis version, will also update the SHA",
     )
     parser.add_argument(
-        "--keep-php-version",
+        "--keep-base-version",
         action="store_true",
         default=False,
-        help="Do not try to find the latest PHP version",
+        help="Do not update Alpine and PHP to the latest versions",
     )
 
     args = parser.parse_args()
@@ -147,8 +135,8 @@ if __name__ == "__main__":
     if args.mantis_version is not None:
         t = update_mantis(t, args.mantis_version)
 
-    if not args.keep_php_version:
-        t = update_php(t)
+    if not args.keep_base_version:
+        t = update_base(t)
 
     patch_file(filepath, t, t_old)
 

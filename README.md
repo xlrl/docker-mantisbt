@@ -4,12 +4,15 @@
 [![Docker Image Version](https://img.shields.io/docker/v/xlrl/mantisbt?sort=semver)](https://hub.docker.com/r/xlrl/mantisbt/tags)
 [![Docker Image Size](https://img.shields.io/docker/image-size/xlrl/mantisbt?sort=semver)](https://hub.docker.com/r/xlrl/mantisbt/tags)
 [![MantisBT](https://img.shields.io/badge/MantisBT-2.28.4-blue)](https://mantisbt.org)
-[![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://hub.docker.com/_/php)
+[![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://pkgs.alpinelinux.org/packages?name=php*-apache2)
 [![GitHub Tag](https://img.shields.io/github/v/tag/xlrl/docker-mantisbt?sort=semver)](https://github.com/xlrl/docker-mantisbt/tags)
 [![License: MIT](https://img.shields.io/github/license/xlrl/docker-mantisbt)](LICENSE)
 
 `MantisBT` is an open source issue tracker that provides
 a delicate balance between simplicity and power.
+
+The image is based on Alpine Linux with Apache and the distribution's
+prebuilt PHP packages, so no compiler is needed.
 
 For changes take a look at [Changelog.md](Changelog.md).
 
@@ -183,10 +186,12 @@ possible. The remaining warnings are expected:
 ## Building
 
 Build a multi-arch image (`linux/amd64`, `linux/arm64`) with podman, tagged
-`localhost/xlrl/mantisbt:<MANTIS_VER>` and `localhost/xlrl/mantisbt:latest`:
+`localhost/xlrl/mantisbt:<MANTIS_VER>` and `localhost/xlrl/mantisbt:latest`.
+With an argument, the image is tagged with this tag only:
 
 ```shell
 ./build-image.sh
+./build-image.sh test
 PLATFORMS=linux/amd64,linux/arm64,linux/arm/v7 ./build-image.sh
 ```
 
@@ -199,10 +204,13 @@ This is the maintainer's section for this repository.
 If you want to upgrade to a new mantis version `X.Y.Z` run the script `update-dockerfile.py`:
 
 ```sh
-python3 update-dockerfile.py X.Y.Z
+uv run update-dockerfile.py --mantis-version X.Y.Z
 ```
 
-This will update the link and sha hash for the mantisbt source tarball and it will also try to find out the latest version the php base image (this makes the used base image tag explicit and adds transpaceny).
+This will update the link and sha hash for the mantisbt source tarball. It
+also updates the Alpine base image to the latest stable branch and the PHP
+packages to the newest `phpXY` of that branch (skip with
+`--keep-base-version`).
 
 Build the new image:
 
