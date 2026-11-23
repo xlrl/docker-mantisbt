@@ -76,12 +76,14 @@ def update_base(t: str) -> str:
     php = latest_php_package(branch)
     log(f"alpine:{branch} {php} ")
 
-    m = re.search(r"FROM alpine:([0-9.]+)", t)
+    # all stages, incl. FROM --platform=... alpine:X.Y
+    from_re = r"(FROM (?:--platform=\S+ )?alpine:)([0-9.]+)"
+    m = re.search(from_re, t)
     assert m is not None
-    current = tuple(int(x) for x in m.group(1).split("."))
+    current = tuple(int(x) for x in m.group(2).split("."))
     if tuple(int(x) for x in branch.split(".")) < current:
-        log(f"WARNING: current alpine:{m.group(1)} is newer than {branch} ")
-    t = t[: m.start(1)] + branch + t[m.end(1) :]
+        log(f"WARNING: current alpine:{m.group(2)} is newer than {branch} ")
+    t = re.sub(from_re, r"\g<1>" + branch, t)
 
     # package prefixes and PHP_INI_DIR
     return re.sub(r"\bphp[0-9]{2}\b", php, t)

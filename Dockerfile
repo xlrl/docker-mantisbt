@@ -2,13 +2,31 @@
 # Dockerfile for mantisbt, Alpine with distro PHP (no compiler)
 #
 
+ARG MANTIS_VER=2.29.0
+ARG MANTIS_SHA512=1741f9e985bb2b030a04972dd6cce57641e513bc36ee27e38ba4e0e5d079f23f62cc7ae464af37e1baee46fc04bdb5e8d30348a381eec2cf940c64b9599d1e4b
+
+# Fetch and verify the tarball once, natively on the build host
+FROM --platform=$BUILDPLATFORM alpine:3.24 AS fetch
+
+ARG MANTIS_VER
+ARG MANTIS_SHA512
+ARG MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
+
+RUN set -xe \
+    && apk add --no-cache curl \
+    && curl -fSL "${MANTIS_URL}" -o /mantisbt.tar.gz \
+    && echo "${MANTIS_SHA512}  /mantisbt.tar.gz" | sha512sum -c \
+    && mkdir /src \
+    && tar -xz --strip-components=1 -C /src -f /mantisbt.tar.gz \
+    && rm -rf /src/doc
+
 FROM alpine:3.24
 
 ENV PHP_INI_DIR=/etc/php85
 
 # Prebuilt PHP and extensions
 RUN apk add --no-cache \
-        apache2 tzdata curl \
+        apache2 tzdata \
         php85 php85-apache2 \
         php85-ctype php85-curl php85-dom php85-fileinfo php85-gd php85-iconv \
         php85-ldap php85-mbstring php85-mysqli php85-pgsql php85-session \
@@ -41,22 +59,14 @@ RUN set -xe \
         > /etc/apache2/conf.d/mantis.conf \
     && mkdir -p /var/www/html
 
-ENV MANTIS_VER=2.29.0
-ENV MANTIS_SHA512=1741f9e985bb2b030a04972dd6cce57641e513bc36ee27e38ba4e0e5d079f23f62cc7ae464af37e1baee46fc04bdb5e8d30348a381eec2cf940c64b9599d1e4b
-ENV MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
-ENV MANTIS_FILE=mantisbt.tar.gz
+ARG MANTIS_VER
+ENV MANTIS_VER=${MANTIS_VER}
 ENV MANTIS_TIMEZONE=Europe/Berlin
 ENV PHP_MAX_UPLOAD_SIZE="5M"
 
 WORKDIR /var/www/html
 
-RUN set -xe \
-    && curl -fSL ${MANTIS_URL} -o ${MANTIS_FILE} \
-    && echo "${MANTIS_SHA512}  ${MANTIS_FILE}" | sha512sum -c \
-    && tar -xz --strip-components=1 -f ${MANTIS_FILE} \
-    && rm ${MANTIS_FILE} \
-    && rm -rf doc \
-    && chown -R www-data:www-data .
+COPY --from=fetch --chown=www-data:www-data /src/ /var/www/html/
 
 COPY mantisbt-entrypoint.sh /usr/local/bin/mantisbt-entrypoint.sh
 

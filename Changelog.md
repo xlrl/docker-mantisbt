@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Download and verify the tarball in a separate build stage: runs once
+  natively for all platforms, `curl` is no longer in the image
+
 ## Version 2.29.0 (2026-11-23)
 
 - Upgrade to MantisBT v2.29.0
