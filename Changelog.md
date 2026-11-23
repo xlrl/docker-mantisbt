@@ -2,8 +2,9 @@
 
 ## Unreleased
 
-- Download and verify the tarball in a separate build stage: runs once
-  natively for all platforms, `curl` is no longer in the image
+- `build-image.sh` downloads and verifies the tarball once into `cache/`
+  for all platforms, it is unpacked in a separate build stage;
+  `curl` is no longer in the image
 
 ## Version 2.29.0 (2026-11-23)
 

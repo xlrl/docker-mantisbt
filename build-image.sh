@@ -7,6 +7,8 @@
 #   TAG  tag as localhost/xlrl/mantisbt:TAG only
 #        (default: tag as :<VERSION> and :latest)
 #
+# Downloads the MantisBT tarball into cache/ (needs curl).
+#
 # Env:
 #   PLATFORMS  comma separated target platforms
 #              (default: linux/amd64,linux/arm64)
@@ -30,6 +32,17 @@ fi
 set -- ${tags}
 manifest="${image}:$1"
 shift
+
+# Download the tarball once for all platforms
+ver=$(sed -n 's/^ARG MANTIS_VER=//p' Dockerfile)
+sha=$(sed -n 's/^ARG MANTIS_SHA512=//p' Dockerfile)
+tarball="cache/mantisbt-${ver}.tar.gz"
+if ! echo "${sha}  ${tarball}" | sha512sum -c --status 2>/dev/null; then
+    mkdir -p cache
+    curl -fSL -o "${tarball}" \
+        "https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${ver}/mantisbt-${ver}.tar.gz"
+    echo "${sha}  ${tarball}" | sha512sum -c
+fi
 
 # Start from a fresh manifest list
 if podman manifest exists "${manifest}"; then

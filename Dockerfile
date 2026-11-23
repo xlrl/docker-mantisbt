@@ -5,16 +5,16 @@
 ARG MANTIS_VER=2.29.0
 ARG MANTIS_SHA512=1741f9e985bb2b030a04972dd6cce57641e513bc36ee27e38ba4e0e5d079f23f62cc7ae464af37e1baee46fc04bdb5e8d30348a381eec2cf940c64b9599d1e4b
 
-# Fetch and verify the tarball once, natively on the build host
+# Verify and unpack the tarball, natively on the build host.
+# Downloaded by build-image.sh into cache/, no network here.
 FROM --platform=$BUILDPLATFORM alpine:3.24 AS fetch
 
 ARG MANTIS_VER
 ARG MANTIS_SHA512
-ARG MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
+
+COPY cache/mantisbt-${MANTIS_VER}.tar.gz /mantisbt.tar.gz
 
 RUN set -xe \
-    && apk add --no-cache curl \
-    && curl -fSL "${MANTIS_URL}" -o /mantisbt.tar.gz \
     && echo "${MANTIS_SHA512}  /mantisbt.tar.gz" | sha512sum -c \
     && mkdir /src \
     && tar -xz --strip-components=1 -C /src -f /mantisbt.tar.gz \

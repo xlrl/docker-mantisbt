@@ -197,6 +197,10 @@ PLATFORMS=linux/amd64,linux/arm64,linux/arm/v7 ./build-image.sh
 
 Cross builds need `qemu-user-static`.
 
+The script downloads and verifies the MantisBT tarball once into `cache/`,
+the build itself needs no network for it. A plain `podman build` needs this
+tarball in `cache/` too.
+
 ## Maintainers
 
 This is the maintainer's section for this repository.
