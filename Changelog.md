@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 2.29.0 (2026-11-23)
+
+- Upgrade to MantisBT v2.29.0
+
 ## Version 2.28.4-3 (2026-11-20)
 
 - Switch to Alpine with prebuilt PHP 8.5 packages instead of the official

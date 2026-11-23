@@ -3,7 +3,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/xlrl/mantisbt)](https://hub.docker.com/r/xlrl/mantisbt)
 [![Docker Image Version](https://img.shields.io/docker/v/xlrl/mantisbt?sort=semver)](https://hub.docker.com/r/xlrl/mantisbt/tags)
 [![Docker Image Size](https://img.shields.io/docker/image-size/xlrl/mantisbt?sort=semver)](https://hub.docker.com/r/xlrl/mantisbt/tags)
-[![MantisBT](https://img.shields.io/badge/MantisBT-2.28.4-blue)](https://mantisbt.org)
+[![MantisBT](https://img.shields.io/badge/MantisBT-2.29.0-blue)](https://mantisbt.org)
 [![PHP](https://img.shields.io/badge/PHP-8.5-777BB4?logo=php&logoColor=white)](https://pkgs.alpinelinux.org/packages?name=php*-apache2)
 [![GitHub Tag](https://img.shields.io/github/v/tag/xlrl/docker-mantisbt?sort=semver)](https://github.com/xlrl/docker-mantisbt/tags)
 [![License: MIT](https://img.shields.io/github/license/xlrl/docker-mantisbt)](LICENSE)

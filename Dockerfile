@@ -41,8 +41,8 @@ RUN set -xe \
         > /etc/apache2/conf.d/mantis.conf \
     && mkdir -p /var/www/html
 
-ENV MANTIS_VER=2.28.4
-ENV MANTIS_SHA512=95968b0e6c3d66a14aa575ddece1b25110b830e54571f8650f619e2f3a9c82a8939605b72b1f4df6448136156cd2f80d5a9831b214104bdfb64b06790de2c0a0
+ENV MANTIS_VER=2.29.0
+ENV MANTIS_SHA512=1741f9e985bb2b030a04972dd6cce57641e513bc36ee27e38ba4e0e5d079f23f62cc7ae464af37e1baee46fc04bdb5e8d30348a381eec2cf940c64b9599d1e4b
 ENV MANTIS_URL=https://downloads.sourceforge.net/project/mantisbt/mantis-stable/${MANTIS_VER}/mantisbt-${MANTIS_VER}.tar.gz
 ENV MANTIS_FILE=mantisbt.tar.gz
 ENV MANTIS_TIMEZONE=Europe/Berlin
